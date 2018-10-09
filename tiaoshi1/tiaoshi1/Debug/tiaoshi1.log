@@ -1,0 +1,4 @@
+﻿  stdafx.cpp
+  tiaoshi1.cpp
+e:\biancheng\tiaoshi1\tiaoshi1\tiaoshi1.cpp(156): warning C4101: “h”: 未引用的局部变量
+  tiaoshi1.vcxproj -> E:\biancheng\tiaoshi1\Debug\tiaoshi1.exe
