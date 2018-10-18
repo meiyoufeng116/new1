@@ -1,253 +1,320 @@
-// 计算器项目.cpp: 定义控制台应用程序的入口点。
-//
 
-#include "stdafx.h"
-typedef struct stack1
+typedef struct stack1  
 {
-	double a[100];
-	int top;
+    double a[100];
+    int top;
 }OPND;
 
 typedef struct stack2
 {
-	char b[100];
-	int top;
+    char b[100];
+    int top;
 }OPTR;
 
 int push_OPND(stack1 *OPND, double a)
 {
-	if (OPND->top == 100 - 1)
-	{
-		printf("input is to looooooong\n");
-		return -1;
-	}
-	OPND->top++;
-	OPND->a[OPND->top] = a;
+    if (OPND->top == 100 - 1)
+    {
+        printf("input is to looooooong\n");
+        return -1;
+    }
+    OPND->top++;
+    OPND->a[OPND->top] = a;
+    return 0;
 }
 
 int push_OPTR(stack2 *OPTR, char a)
 {
-	if (OPTR->top == 100 - 1)
-	{
-		printf("input is to looooooong\n");
-		return -1;
-	}
-	OPTR->top++;
-	OPTR->b[OPTR->top] = a;
+    if (OPTR->top == 100 - 1)
+    {
+        printf("input is to looooooong\n");
+        return -1;
+    }
+    OPTR->top++;
+    OPTR->b[OPTR->top] = a;
+    return 0;
 }
 double pop_OPND(stack1 *OPND)
 {
-	double a = 0;
-	a = OPND->a[OPND->top];
-	OPND->top--;
-	return a;
+    double a = 0;
+    a = OPND->a[OPND->top];
+    OPND->top--;
+    return a;
 }
 
 char pop_OPTR(stack2 *OPTR)
 {
-	char b;
-	b = OPTR->b[OPTR->top];
-	OPTR->top--;
-	return b;
+    char b;
+    b = OPTR->b[OPTR->top];
+    OPTR->top--;
+    return b;
 }
 
 void init_OPND(stack1 *opnd)
 {
-	opnd->top = -1;
+    opnd->top = -1;
 }
 
 void init_OPTR(stack2 *optr)
 {
-	optr->top = -1;
+    optr->top = -1;
 }
 
 int In(char ch)
 {
-	if (ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '(' || ch == ')' || ch == '=' || ch == '\n')
-	{
-		return 1;
-	}
-	else
-	{
-		return 0;
-	}
+    if (ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '(' || ch == ')' || ch == '=' || ch == '\n')
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 char precede(char f1, char f2)
 {
-	char a;
-	switch (f2)
-	{
-	case'+':
-	case'-':
-	{
-		a = (f1 == '(' || f1 == '=') ? '<' : '>';
-		break;
-	}
-	case'*':
-	case'/':
-	{
-		a = (f1 == '*' || f1 == '/' || f1 == ')') ? '>' : '<';
-		break;
-	}
-	case'(':
-	{
-		if (f1 == ')')
-		{
-			printf("括号有问题\n");
-			return -1;
-		}
-		else
-		{
-			a = '<';
-		}
-		break;
-	}
-	case')':
-	{
-		switch (f1)
-		{
-		case'(':
-		{
-			a = '=';
-			break;
-		}
-		case'=':
-		{
-			printf("括号有问题\n");
-			return -1;
-		}
-		default:a = '>';
-		}
-
-	}
-	case'=':
-	{
-		switch (f1)
-		{
-		case'=':
-		{
-			a = '=';
-			break;
-		}
-		case'(':
-		{
-			printf("括号有问题\n");
-			return -1;
-		}
-		default:a = '>';
-		}
-
-	}
-	default:
-		break;
-	}
-	return a;
+    char a;
+    switch (f2)
+    {
+        case'+':
+        case'-':
+        {
+            a = (f1 == '(' || f1 == '=') ? '<' : '>';
+            break;
+        }
+        case'*':
+        case'/':
+        {
+            a = (f1 == '*' || f1 == '/' || f1 == ')') ? '>' : '<';
+            break;
+        }
+        case'(':
+        {
+            if (f1 == ')')
+            {
+                printf("括号有问题1\n");
+                return -1;
+            }
+            else
+            {
+                a = '<';
+            }
+            break;
+        }
+        case')':
+        {
+            switch (f1)
+            {
+                case'(':
+                {
+                    a = '=';
+                    break;
+                }
+                case'=':
+                {
+                    printf("括号有问题2\n");
+                    return -1;
+                    break;
+                }
+                default:a = '>';
+            }
+            
+        }
+        case'=':
+        {
+            switch (f1)
+            {
+                case'=':
+                {
+                    a = '=';
+                    break;
+                }
+                case'(':
+                {
+                    printf("括号有问题3\n");
+                    return -1;
+                    
+                }
+                default:a = '>';
+            }
+            
+        }
+    }
+    return a;
+}
+char bijiao(char t1,char t2)
+{
+    char ch;
+    switch(t2)
+    {
+        case '+':
+        case '-':
+        {
+            ch = (t1 == '('||t1 == '=')?'<':'>';
+            break;
+        }
+        case '*':
+        case '/':
+        {
+            ch = (t1 == '*'||t1 == '/' ||t1 == ')')?'>':'<';
+            break;
+        }
+        case '(':
+        {
+            if(t1 == ')')
+            {
+                printf("input error\n");
+                return -1;
+            }
+            else
+            {
+                ch = '<';
+            }
+            break;
+        }
+        case ')':
+        {
+            switch(t1)
+            {
+                case '(':
+                {
+                    ch = '=';
+                    break;
+                }
+                case '=':
+                {
+                    printf("error input\n");
+                    exit(0);
+                }
+                default:ch = '>';
+            }
+            break;
+        }
+        case '=':
+        {
+            switch(t1)
+            {
+                case '=':
+                {
+                    ch = '=';
+                    break;
+                }
+                case '(':
+                {
+                    printf("error input!\n");
+                    return -1;
+                }
+                default:ch = '>';
+            }
+        }
+    }
+    return ch;
 }
 double calculate(double x, char op, char y)
 {
-	double z;
-	switch (op)
-	{
-	case'+':
-	{
-		z = x + y;
-		break;
-	}
-	case'-':
-	{
-		z = x - y;
-		break;
-	}
-	case'*':
-	{
-		z = x * y;
-		break;
-	}
-	case'/':
-	{
-		if (y == 0)
-		{
-			printf("除数不能等于0\n");
-			return -1;
-		}
-		else
-		{
-			z = x / y;
-
-		}
-	}
-	}
-	return z;
+    double z = 0.0;
+    switch (op)
+    {
+        case'+':
+        {
+            z = x + y;
+            break;
+        }
+        case'-':
+        {
+            z = x - y;
+            break;
+        }
+        case'*':
+        {
+            z = x * y;
+            break;
+        }
+        case'/':
+        {
+            if (y == 0)
+            {
+                printf("除数不能等于0\n");
+                return -1;
+            }
+            else
+            {
+                z = x / y;
+                
+            }
+        }
+    }
+    return z;
 }
 
 double evaluateexpression()
 {
-	OPND opnd;
-	OPTR optr;
-	double num1, num2, result, num;
-	char ch1, sign;
-	char *str = NULL;
-	int i = 0;
-	init_OPND;
-	init_OPTR;
-	push_OPTR(&optr, '=');
-	ch1 = getchar();
-	while ((ch1 != '=') || optr.b[optr.top] != '=')
-	{
-		if (In(ch1 == 0))
-		{
-			str = (char*)malloc(sizeof(char) * 10);
-			do
-			{
-				*str = ch1;
-				str++;
-				i++;
-				ch1 = getchar();
-			} while (In(ch1) == 0);
-			*str = '\0';
-				num = atof(str);
-			push_OPND(&opnd, num);
-			str = NULL;
-			i = 0;
-		}
-		else
-		{
-			switch (precede(optr.b[optr.top], ch1))
-			{
-				case'<':
-					{ 
-					push_OPTR(&optr, ch1);
-					ch1 = getchar();
-					break;
-					}
-				case'=':
-				{
-					sign = pop_OPTR(&optr);
-					ch1 = getchar();
-					break;
-				}
-				case'>':
-				{
-					sign = pop_OPTR(&optr);
-					num2 = pop_OPND(&opnd);
-					num1 = pop_OPND(&opnd);
-					result = calculate(num1, sign, num2);
-					push_OPND(&opnd, result);
-					break;
-				}
-			}
-
-		}
-	}
-	result = opnd.a[opnd.top];
-	return result;
+    OPND opnd;
+    OPTR optr;
+    double num1, num2, result, num;
+    char ch1, sign;
+    char *str = NULL;
+    int i = 0;
+    init_OPND(&opnd);
+    init_OPTR(&optr);
+    push_OPTR(&optr, '=');
+    ch1 = getchar();
+    while ((ch1 != '=') || optr.b[optr.top] != '=')
+    {
+        if (In(ch1) == 0)
+        {
+            str = (char*)malloc(sizeof(char) * 10);
+            do
+            {
+                *str = ch1;
+                str++;
+                i++;
+                ch1 = getchar();
+            } while (In(ch1) == 0);
+            *str = '\0';
+            str=str-i;
+            num = atof(str);
+            push_OPND(&opnd, num);
+            str = NULL;
+            i = 0;
+        }
+        else
+        {
+            switch (bijiao(optr.b[optr.top], ch1))
+            {
+                case'<':
+                {
+                    push_OPTR(&optr, ch1);
+                    ch1 = getchar();
+                    break;
+                }
+                case'=':
+                {
+                    sign = pop_OPTR(&optr);
+                    ch1 = getchar();
+                    break;
+                }
+                case'>':
+                {
+                    sign = pop_OPTR(&optr);
+                    num2 = pop_OPND(&opnd);
+                    num1 = pop_OPND(&opnd);
+                    result = calculate(num1, sign, num2);
+                    push_OPND(&opnd, result);
+                    break;
+                }
+            }
+            
+        }
+    }
+    result = opnd.a[opnd.top];
+    return result;
 }
 int main()
 {
-	double a;
-	a = evaluateexpression();
-	printf("计算的结果为%d", a);
-	return 0;
+    double a;
+    a = evaluateexpression();
+    printf("计算的结果为%f", a);
+    return 0;
 }
-
